@@ -11,9 +11,9 @@ function App() {
     <div className="App">
         <Routes>
           <Route path="/" exact element={<Home />} />
-          <Route path="/mosquito-net/ready-to-install" exact element={<Home />} />
-          <Route path="/mosquito-net/contact-form" exact element={<ContactUs />} />
-          <Route path="/mosquito-net/calculate-price" exact element={<CustomizeNets />} />
+          <Route path="/mosquito-net/ready-to-install" element={<Home />} />
+          <Route path="/mosquito-net/contact-form"  element={<ContactUs />} />
+          <Route path="/mosquito-net/calculate-price" element={<CustomizeNets />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
     </div>
