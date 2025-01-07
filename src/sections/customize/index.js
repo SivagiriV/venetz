@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import ColorSelector from './colorselector';
 import DimensionCalculator from './dimension'
 import useIsMobile from '../../utils';
-
+import { useNavigate } from 'react-router-dom'
 export default function DeliveryChecker() {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [maxVisitedStep, setMaxVisitedStep] = useState(1);
   const [pincode, setPincode] = useState("");
   const [isAvailable, setIsAvailable] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [price, setPrice] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [colorList, setColorList] = useState();
-
+  const [selectedColor, setSelectedColor] = useState();
   const styles = {
     container: {
       margin: '0 auto',
@@ -35,7 +33,7 @@ export default function DeliveryChecker() {
       flexDirection: isMobile ? 'column' : 'row',
       alignItems: isMobile ? 'flex-start' : 'center',
       gap: '8px',
-      width:'100%',
+      width: '100%',
     },
     stepWrapper: {
       display: 'flex',
@@ -156,7 +154,13 @@ export default function DeliveryChecker() {
       fontWeight: '600',
     },
   };
-
+  const product_variant_id = selectedColor?.attribute_value_url_text === 'light-blue' ? 28 : selectedColor?.attribute_value_url_text === 'yellow' ? 29 : selectedColor?.attribute_value_url_text === 'pink' ? 30 : selectedColor?.attribute_value_url_text === 'green' ? 31 : 32
+  const addCart = (quantity, dimension) => {
+    navigate(`/cart?product_variant=${product_variant_id}?quantity=${quantity}?length=${dimension.length}?breadth=${dimension.breadth}?height=${dimension.height}`)
+  };
+  const buyNow = (quantity, dimension) => {
+    navigate(`/cart?product_variant=${product_variant_id}?quantity=${quantity}?length=${dimension.length}?breadth=${dimension.breadth}?height=${dimension.height}?buy_now=1`)
+  }
   const getPostalAvailability = async () => {
     try {
       setIsChecked(false);
@@ -288,13 +292,18 @@ export default function DeliveryChecker() {
       case 2:
         return (
           <div style={styles.formContainer}>
-            <ColorSelector />
+            <ColorSelector
+              selectedColor={selectedColor}
+              setSelectedColor={setSelectedColor}
+            />
           </div>
         );
       case 3:
         return (
           <div style={styles.formContainer}>
             <DimensionCalculator
+              addCart={addCart}
+              buyNow={buyNow}
             />
           </div>
         );

@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import useIsMobile from '../../utils';
 import axios from 'axios';
 
-const ColorSelector = () => {
+const ColorSelector = ({ selectedColor, setSelectedColor }) => {
   const isMobile = useIsMobile();
-  const [colorList,setColorList] = useState([])
-  const [selectedColor, setSelectedColor] = useState(colorList[0]);
+  const [colorList, setColorList] = useState([])
   const colorCode = async () => {
     try {
       const url = "https://admin.venetz.in/api/products";
@@ -22,6 +21,10 @@ const ColorSelector = () => {
         response?.data?.products[0]?.product_attribute_types[0]
           ?.product_attribute_values
       );
+      setSelectedColor(
+        response?.data?.products[0]?.product_attribute_types[0]
+          ?.product_attribute_values[0]
+      )
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -40,7 +43,7 @@ const ColorSelector = () => {
     };
     return urls[colorName] || urls["Light Blue"];
   };
-
+  console.log('cl', colorList)
   return (
     <div style={{
       display: 'flex',
@@ -49,25 +52,25 @@ const ColorSelector = () => {
       gap: isMobile ? '24px' : '48px',
     }}>
       <div>
-        {isMobile ? 
-        <img
-          src={getImageUrl(selectedColor?.attribute_value_text)}
-          style={{
-            objectFit: 'contain',
-          }}
-          width={150}
-          height={150}
-          alt={`${selectedColor?.attribute_value_text} product`}
-        /> : 
-        <img
-        src={getImageUrl(selectedColor?.attribute_value_text)}
-        style={{
-          objectFit: 'contain',
-        }}
-        width={350}
-        height={350}
-        alt={`${selectedColor?.attribute_value_text} product`}
-      /> }
+        {isMobile ?
+          <img
+            src={getImageUrl(selectedColor?.attribute_value_text)}
+            style={{
+              objectFit: 'contain',
+            }}
+            width={150}
+            height={150}
+            alt={`${selectedColor?.attribute_value_text} product`}
+          /> :
+          <img
+            src={getImageUrl(selectedColor?.attribute_value_text)}
+            style={{
+              objectFit: 'contain',
+            }}
+            width={350}
+            height={350}
+            alt={`${selectedColor?.attribute_value_text} product`}
+          />}
       </div>
       <div style={{ flex: 1 }}>
         <h3 style={{

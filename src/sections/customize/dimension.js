@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useIsMobile from '../../utils';
 import axios from 'axios';
-const DimensionCalculator = () => {
+const DimensionCalculator = ({ addCart, buynow }) => {
   const isMobile = useIsMobile();
   const [dimensions, setDimensions] = useState({
     length: "",
@@ -26,7 +26,7 @@ const DimensionCalculator = () => {
     },
     illustration: {
       width: isMobile ? 150 : 300,
-      height: isMobile ? 150 :300,
+      height: isMobile ? 150 : 300,
       objectFit: 'cover',
     },
     formContainer: {
@@ -326,10 +326,10 @@ const DimensionCalculator = () => {
               </div>
             </div>
             <div>
-              <button style={{...styles.actionButton, ...styles.addToCartButton}} disabled>
+              <button style={{ ...styles.actionButton, ...styles.addToCartButton }} onClick={() => addCart(quantity, dimensions)}>
                 <span style={styles.actionButtonText}>ADD TO CART</span>
               </button>
-              <button style={{...styles.actionButton, ...styles.buyNowButton}} disabled>
+              <button style={{ ...styles.actionButton, ...styles.buyNowButton }} onClick={() => buynow(quantity, dimensions)}>
                 <span style={styles.actionButtonText}>BUY NOW</span>
               </button>
             </div>
